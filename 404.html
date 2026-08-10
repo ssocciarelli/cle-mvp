@@ -19,12 +19,70 @@
     <meta property="og:image" content="https://ssocciarelli.github.io/cle-portfolio/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Clé — Le réseau de confiance de l'immobilier québécois</title>
-    <script type="module" crossorigin src="/cle-mvp/assets/index-DUviS8IB.js"></script>
+    <!-- Coquille d'attente statique : remplacée par le premier rendu React
+         (visible surtout en mode distant, pendant l'hydratation de la session).
+         Valeurs codées en dur reprises de tokens.css, car la feuille de style
+         de l'application n'est pas encore chargée à ce stade. -->
+    <style>
+      #cle-boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        background: #faf9f7;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      #cle-boot .cle-boot-mark {
+        font-size: 2.25rem;
+        letter-spacing: 0.02em;
+        color: #1c1917;
+      }
+      #cle-boot .cle-boot-spin {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 3px solid #fdf6e3;
+        border-top-color: #a16207;
+        animation: cle-boot-spin 0.9s linear infinite;
+      }
+      @keyframes cle-boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        #cle-boot {
+          background: #131519;
+        }
+        #cle-boot .cle-boot-mark {
+          color: #f4f2ee;
+        }
+        #cle-boot .cle-boot-spin {
+          border-color: #232a3d;
+          border-top-color: #d4a72c;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #cle-boot .cle-boot-spin {
+          animation: none;
+          border-top-color: #fdf6e3;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/cle-mvp/assets/index-BmoAXVPH.js"></script>
     <link rel="modulepreload" crossorigin href="/cle-mvp/assets/rolldown-runtime-CbXtAM7H.js">
     <link rel="modulepreload" crossorigin href="/cle-mvp/assets/vendor-BsURypet.js">
-    <link rel="stylesheet" crossorigin href="/cle-mvp/assets/index-FAi1Q5ij.css">
+    <link rel="stylesheet" crossorigin href="/cle-mvp/assets/index-CGouPiPZ.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="cle-boot" role="status" aria-label="Clé">
+        <span class="cle-boot-mark" aria-hidden="true">Clé</span>
+        <span class="cle-boot-spin" aria-hidden="true"></span>
+      </div>
+    </div>
   </body>
 </html>
