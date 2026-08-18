@@ -925,6 +925,12 @@
       });
     }, { threshold: 0.12 });
     els.forEach(function (el) { io.observe(el); });
+    // FILET DE SÉCURITÉ : si l'observation ne se déclenche pas (navigateur
+    // intégré, lecteur particulier), tout devient visible quand même — le
+    // contenu ne dépend JAMAIS de l'animation.
+    setTimeout(function () {
+      els.forEach(function (el) { el.classList.add("in"); io.unobserve(el); });
+    }, 2200);
   })();
 </script>
 </body>
