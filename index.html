@@ -1,88 +1,931 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Clé — le réseau de confiance pour faire avancer vos projets immobiliers. Prototype de démonstration (données fictives)."
-    />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 74 74'%3E%3Cg fill='none' stroke='%23eab308' stroke-width='10' stroke-linecap='round'%3E%3Cpath d='M 42.4 13.6 A 19 19 0 1 0 42.4 42.4'/%3E%3Cpath d='M 44 42 L 63 61'/%3E%3Cpath d='M 51 49 L 44.5 55.5'/%3E%3Cpath d='M 60 58 L 52 66'/%3E%3C/g%3E%3C/svg%3E"
-    />
-    <meta property="og:title" content="Clé — Le réseau de confiance de l'immobilier québécois" />
-    <meta
-      property="og:description"
-      content="Démo interactive : marché conforme, projets, investissement simulé, IA avec révision humaine. Données fictives."
-    />
-    <meta property="og:image" content="https://ssocciarelli.github.io/cle-portfolio/og.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Clé — Le réseau de confiance de l'immobilier québécois</title>
-    <!-- Coquille d'attente statique : remplacée par le premier rendu React
-         (visible surtout en mode distant, pendant l'hydratation de la session).
-         Valeurs codées en dur reprises de tokens.css, car la feuille de style
-         de l'application n'est pas encore chargée à ce stade. -->
-    <style>
-      #cle-boot {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        background: #faf9f7;
-        font-family: Georgia, "Times New Roman", serif;
-      }
-      #cle-boot .cle-boot-mark {
-        font-size: 2.25rem;
-        letter-spacing: 0.02em;
-        color: #1c1917;
-      }
-      #cle-boot .cle-boot-spin {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        border: 3px solid #fdf6e3;
-        border-top-color: #a16207;
-        animation: cle-boot-spin 0.9s linear infinite;
-      }
-      @keyframes cle-boot-spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      @media (prefers-color-scheme: dark) {
-        #cle-boot {
-          background: #131519;
-        }
-        #cle-boot .cle-boot-mark {
-          color: #f4f2ee;
-        }
-        #cle-boot .cle-boot-spin {
-          border-color: #232a3d;
-          border-top-color: #d4a72c;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        #cle-boot .cle-boot-spin {
-          animation: none;
-          border-top-color: #fdf6e3;
-        }
-      }
-    </style>
-    <script type="module" crossorigin src="/cle-mvp/assets/index-NnaDYpaS.js"></script>
-    <link rel="modulepreload" crossorigin href="/cle-mvp/assets/rolldown-runtime-CbXtAM7H.js">
-    <link rel="modulepreload" crossorigin href="/cle-mvp/assets/vendor-BKJq8QXX.js">
-    <link rel="stylesheet" crossorigin href="/cle-mvp/assets/index-Me-ysz5q.css">
-  </head>
-  <body>
-    <div id="root">
-      <div id="cle-boot" role="status" aria-label="Clé">
-        <span class="cle-boot-mark" aria-hidden="true">Clé</span>
-        <span class="cle-boot-spin" aria-hidden="true"></span>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clé · La confiance, vérifiée</title>
+<style>
+  :root {
+    --ground: #F7F3EB;
+    --surface: #FFFFFF;
+    --surface-2: #EFE9DC;
+    --line: #DDD4C2;
+    --ink: #232730;
+    --ink-2: #5C6068;
+    --navy: #1B2B4B;
+    --navy-deep: #14203A;
+    --navy-ink: #EDE7DA;
+    --navy-dim: #A6B0C6;
+    --gold: #C9A45C;
+    --gold-deep: #A8842F;
+    --emerald: #1E7A56;
+    --emerald-bg: #E2EFE8;
+    --brick: #A63D32;
+    --brick-bg: #F4E3E0;
+    --mono-bg: #14203A;
+    --mono-ink: #DFE4EE;
+    --mono-dim: #8A96AF;
+    --mono-ok: #8CC9A6;
+    --mono-bad: #E0988C;
+    --shadow: 0 1px 2px rgba(27,43,75,.06), 0 8px 28px -12px rgba(27,43,75,.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #10151F;
+      --surface: #1A2130;
+      --surface-2: #222A3C;
+      --line: #323C52;
+      --ink: #E8E3D7;
+      --ink-2: #9CA3B0;
+      --navy: #16223C;
+      --navy-deep: #101A2E;
+      --navy-ink: #EDE7DA;
+      --navy-dim: #9FAAC2;
+      --gold: #C9A45C;
+      --gold-deep: #C9A45C;
+      --emerald: #4CB287;
+      --emerald-bg: #17332A;
+      --brick: #D4796C;
+      --brick-bg: #3A2320;
+      --mono-bg: #0C1322;
+      --mono-ink: #DDE2EC;
+      --mono-dim: #7E8AA4;
+      --mono-ok: #79BD98;
+      --mono-bad: #D08A7E;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #10151F;
+    --surface: #1A2130;
+    --surface-2: #222A3C;
+    --line: #323C52;
+    --ink: #E8E3D7;
+    --ink-2: #9CA3B0;
+    --navy: #16223C;
+    --navy-deep: #101A2E;
+    --navy-ink: #EDE7DA;
+    --navy-dim: #9FAAC2;
+    --gold: #C9A45C;
+    --gold-deep: #C9A45C;
+    --emerald: #4CB287;
+    --emerald-bg: #17332A;
+    --brick: #D4796C;
+    --brick-bg: #3A2320;
+    --mono-bg: #0C1322;
+    --mono-ink: #DDE2EC;
+    --mono-dim: #7E8AA4;
+    --mono-ok: #79BD98;
+    --mono-bad: #D08A7E;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 16.5px/1.7 -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: "Iowan Old Style", "Palatino Nova", Palatino, "Book Antiqua", Georgia, serif; }
+  .mono  { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; }
+  .wrap  { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── Hero ─────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(168deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: var(--navy-ink);
+    padding: 40px 0 64px;
+  }
+  .masthead { display: flex; align-items: center; gap: 13px; }
+  .keymark { flex: none; color: var(--gold); }
+  .brand { font-size: 25px; font-weight: 600; letter-spacing: .01em; }
+  .masthead .date { margin-left: auto; font-size: 13.5px; color: var(--navy-dim); text-align: right; }
+  .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .emblem { margin: 58px 0 18px; position: relative; }
+  .emblem svg { display: block; }
+  .emblem .halo {
+    position: absolute; inset: -34px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,164,92,.22) 0%, rgba(201,164,92,0) 68%);
+    pointer-events: none;
+  }
+  .brandmark { display: flex; align-items: center; }
+  .brandword { font-weight: 700; font-size: 88px; line-height: 1; letter-spacing: -0.03em; color: var(--navy-ink); margin-left: -28px; }
+  .branddot { color: var(--gold); }
+  .emblem-tag { font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin: 8px 0 0; }
+  .hero h1 {
+    font-size: clamp(30px, 4.6vw, 46px);
+    line-height: 1.14;
+    font-weight: 600;
+    margin: 42px 0 18px;
+    max-width: 22ch;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero .stand {
+    font-size: 18px; line-height: 1.65; color: var(--navy-dim);
+    max-width: 58ch; margin: 0 auto 36px;
+  }
+  .hero .stand strong { color: var(--navy-ink); font-weight: 600; }
+  .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .stat { text-align: left; }
+  .stat {
+    border: 1px solid rgba(201,164,92,.35);
+    border-radius: 8px;
+    padding: 14px 20px 12px;
+    min-width: 168px;
+    background: rgba(255,255,255,.03);
+  }
+  .stat .n { font-size: 30px; font-weight: 650; color: var(--gold); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stat .l { font-size: 13px; color: var(--navy-dim); margin-top: 4px; }
+  .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 0 0 42px; }
+  a.btn { text-decoration: none; display: inline-block; }
+  .btn-gold { background: var(--gold); border-color: var(--gold); color: #14203A; }
+  .btn-gold:hover { background: #D9B876; border-color: #D9B876; }
+  .btn-ghost { background: transparent; color: var(--navy-ink); border: 1px solid rgba(201,164,92,.55); }
+  .btn-ghost:hover { background: rgba(201,164,92,.12); }
+
+  /* ── Sections ─────────────────────────────────── */
+  section { padding: 64px 0 8px; }
+  .kicker {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 10px;
+  }
+  h2 { font-size: clamp(26px, 3.6vw, 34px); line-height: 1.2; color: var(--navy); font-weight: 600; margin: 0 0 14px; text-wrap: balance; }
+  :root[data-theme="dark"] h2 { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) h2 { color: var(--ink); } }
+  .lede { font-size: 17.5px; color: var(--ink-2); max-width: 64ch; margin: 0 0 30px; }
+  p { max-width: 66ch; }
+
+  /* Promise cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 34px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 26px 22px;
+    box-shadow: var(--shadow);
+  }
+  .card .glyph { color: var(--gold-deep); margin-bottom: 14px; }
+  .card h3 { font-size: 18.5px; line-height: 1.35; margin: 0 0 10px; color: var(--navy); font-weight: 650; }
+  :root[data-theme="dark"] .card h3 { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card h3 { color: var(--ink); } }
+  .card p { font-size: 14.5px; line-height: 1.65; color: var(--ink-2); margin: 0; }
+
+  /* Fix panels */
+  .fix {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 30px 32px 26px;
+    margin-top: 26px;
+  }
+  .fix .ref { font-size: 12px; color: var(--ink-2); letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .fix h3 { font-size: 21px; margin: 6px 0 12px; color: var(--navy); font-weight: 650; line-height: 1.3; }
+  :root[data-theme="dark"] .fix h3 { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fix h3 { color: var(--ink); } }
+  .fix > p { font-size: 15.5px; color: var(--ink-2); margin: 0 0 18px; }
+  .fix > p strong { color: var(--ink); }
+
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 6px 0 10px; }
+  @media (max-width: 640px) { .ba { grid-template-columns: 1fr; } }
+  .ba > div { border-radius: 8px; padding: 16px 18px 14px; font-size: 14px; line-height: 1.6; }
+  .ba .before { background: var(--brick-bg); color: var(--ink); }
+  .ba .after  { background: var(--emerald-bg); color: var(--ink); }
+  .ba .tag { display: block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 7px; }
+  .ba .before .tag { color: var(--brick); }
+  .ba .after  .tag { color: var(--emerald); }
+
+  .evidence {
+    background: var(--mono-bg); color: var(--mono-ink);
+    border-radius: 8px; padding: 15px 18px; overflow-x: auto; margin: 16px 0 4px;
+  }
+  .evidence pre { margin: 0; font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; line-height: 1.8; white-space: pre; }
+  .evidence .dim { color: var(--mono-dim); }
+  .evidence .ok  { color: var(--mono-ok); }
+  .evidence .bad { color: var(--mono-bad); }
+
+  /* Gates band */
+  .band {
+    background: linear-gradient(168deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: var(--navy-ink);
+    border-radius: 12px;
+    padding: 38px 38px 34px;
+    margin-top: 34px;
+  }
+  .band h3 { font-size: 22px; margin: 0 0 6px; font-weight: 650; }
+  .band .sub { color: var(--navy-dim); font-size: 14.5px; margin: 0 0 24px; max-width: 60ch; }
+  .band .row { display: flex; flex-wrap: wrap; gap: 30px 48px; }
+  .band .g .n { font-size: 34px; font-weight: 650; color: var(--gold); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .band .g .l { font-size: 13px; color: var(--navy-dim); margin-top: 4px; max-width: 21ch; }
+
+  /* Honesty table */
+  .tablewrap { overflow-x: auto; margin-top: 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 620px; }
+  th { text-align: left; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); font-weight: 700; padding: 16px 20px 12px; border-bottom: 1.5px solid var(--line); }
+  td { padding: 14px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+  :root[data-theme="dark"] td:first-child { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) td:first-child { color: var(--ink); } }
+  td:nth-child(3) { color: var(--ink-2); font-size: 13.5px; }
+
+  .chip { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border-radius: 4px; padding: 3px 9px; white-space: nowrap; }
+  .chip.ok  { color: var(--emerald); background: var(--emerald-bg); }
+  .chip.off { color: var(--ink-2); background: var(--surface-2); }
+
+  /* Links + footer */
+  a { color: var(--gold-deep); text-decoration-color: var(--gold); text-underline-offset: 3px; font-weight: 600; }
+  a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+  .see { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 30px; }
+  .see .card p { margin-top: 6px; }
+  footer {
+    margin-top: 84px;
+    background: linear-gradient(168deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: var(--navy-dim);
+    padding: 40px 0 46px;
+    font-size: 13.5px; line-height: 1.7;
+  }
+  footer .brandline { display: flex; align-items: center; gap: 10px; color: var(--navy-ink); font-size: 17px; font-weight: 600; margin-bottom: 14px; }
+  footer .brandline .keymark { width: 22px; height: 22px; }
+  footer p { max-width: 76ch; margin: 0; }
+
+  /* Scope board */
+  .scope-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 28px 0 18px; }
+  .fbtn {
+    font: 600 13px/1 -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink-2); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 999px; padding: 8px 15px; cursor: pointer;
+  }
+  .fbtn[aria-pressed="true"] { color: var(--navy-ink); background: var(--navy); border-color: var(--navy); }
+  .fbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .scope-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .scope-card {
+    position: relative; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 18px 38px 16px 18px; box-shadow: var(--shadow);
+  }
+  .scope-card h4 { margin: 0 0 8px; font-size: 15.5px; line-height: 1.35; color: var(--navy); font-weight: 650; }
+  :root[data-theme="dark"] .scope-card h4 { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .scope-card h4 { color: var(--ink); } }
+  .scope-card .note { font-size: 13px; line-height: 1.55; color: var(--ink-2); margin: 8px 0 0; }
+  .scope-card .x {
+    position: absolute; top: 8px; right: 8px; width: 26px; height: 26px;
+    border: none; border-radius: 6px; background: transparent; color: var(--ink-2);
+    font-size: 15px; line-height: 1; cursor: pointer;
+  }
+  .scope-card .x:hover { background: var(--brick-bg); color: var(--brick); }
+  .scope-card .x:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .st { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border-radius: 4px; padding: 3px 8px; }
+  .st-done { color: var(--emerald); background: var(--emerald-bg); }
+  .st-wip  { color: var(--gold-deep); background: var(--surface-2); }
+  .st-plan { color: var(--navy); background: var(--surface-2); }
+  :root[data-theme="dark"] .st-plan { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .st-plan { color: var(--ink); } }
+  .st-off  { color: var(--ink-2); background: var(--surface-2); }
+  .scope-add {
+    background: var(--surface); border: 1px dashed var(--line); border-radius: 10px;
+    padding: 20px 22px 18px; margin-top: 18px;
+  }
+  .scope-add .row2 { display: flex; flex-wrap: wrap; gap: 10px; }
+  .scope-add label { display: block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 5px; }
+  .scope-add input, .scope-add select {
+    font: 14.5px/1.4 -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--ground); border: 1px solid var(--line);
+    border-radius: 7px; padding: 9px 12px; min-width: 0;
+  }
+  .scope-add input:focus-visible, .scope-add select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .scope-add .f-name { flex: 2 1 200px; }
+  .scope-add .f-note { flex: 3 1 240px; }
+  .scope-add .f-st   { flex: 1 1 150px; }
+  .btn {
+    font: 650 14.5px/1 -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--navy-ink); background: var(--navy); border: 1px solid var(--navy);
+    border-radius: 7px; padding: 11px 20px; cursor: pointer;
+  }
+  .btn:hover { background: var(--navy-deep); }
+  .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .btn-quiet { background: transparent; color: var(--ink-2); border: 1px solid var(--line); font-weight: 600; }
+  .btn-quiet:hover { background: var(--surface-2); color: var(--ink); }
+  .scope-note { font-size: 12.5px; color: var(--ink-2); margin: 14px 0 0; }
+
+  /* Property showcase */
+  .prop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 18px; margin-top: 32px; }
+  .prop-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .prop-art { display: block; width: 100%; height: auto; }
+  .prop-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
+  .prop-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .prop-body h3 { margin: 0; font-size: 16.5px; line-height: 1.3; color: var(--navy); font-weight: 650; }
+  :root[data-theme="dark"] .prop-body h3 { color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .prop-body h3 { color: var(--ink); } }
+  .prop-price { font-size: 16.5px; font-weight: 700; color: var(--gold-deep); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .prop-meta { font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+  .prop-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; }
+
+  /* Reveal animation */
+  html.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  html.js .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { html.js .reveal { opacity: 1; transform: none; transition: none; } }
+
+  .ensum {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow); padding: 22px 26px; margin-top: 46px;
+  }
+  .ensum .tag { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-deep); font-weight: 800; }
+  .ensum p { font-size: 14.5px; color: var(--ink-2); margin: 8px 0 0; max-width: none; }
+  .ensum p strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ═════════ HERO ═════════ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="masthead">
+      <div class="date" style="margin-left:0">Dossier de confiance</div>
+      <div class="date">17 août 2026</div>
+    </div>
+
+    <div class="hero-center">
+      <div class="emblem" role="img" aria-label="Clé">
+        <span class="halo"></span>
+        <span class="brandmark">
+          <svg viewBox="0 0 74 74" width="132" height="132" aria-hidden="true">
+            <defs>
+              <linearGradient id="cleg" gradientUnits="userSpaceOnUse" x1="8" y1="4" x2="62" y2="66">
+                <stop offset="0" stop-color="#fde68a"/>
+                <stop offset="0.45" stop-color="#eab308"/>
+                <stop offset="1" stop-color="#996207"/>
+              </linearGradient>
+            </defs>
+            <g fill="none" stroke="#7c4a03" stroke-width="9" stroke-linecap="round" opacity="0.22" transform="translate(0,1.8)">
+              <path d="M 42.4 13.6 A 19 19 0 1 0 42.4 42.4"/>
+              <path d="M 44 42 L 63 61"/>
+              <path d="M 51 49 L 44.5 55.5"/>
+              <path d="M 60 58 L 52 66"/>
+            </g>
+            <g fill="none" stroke="url(#cleg)" stroke-width="9" stroke-linecap="round">
+              <path d="M 42.4 13.6 A 19 19 0 1 0 42.4 42.4"/>
+              <path d="M 44 42 L 63 61"/>
+              <path d="M 51 49 L 44.5 55.5"/>
+              <path d="M 60 58 L 52 66"/>
+            </g>
+            <path d="M 36 5.6 A 20.5 20.5 0 0 0 13 15.4" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="2.8" stroke-linecap="round"/>
+          </svg>
+          <span class="brandword" aria-hidden="true">lé<span class="branddot">.</span></span>
+        </span>
+      </div>
+      <div class="emblem-tag">Réseau immobilier de confiance · Québec</div>
+
+      <h1 class="serif">La confiance ne se déclare pas. <em>Elle se vérifie.</em></h1>
+      <p class="stand">
+      Clé est une plateforme immobilière de confiance en construction au Québec — une bêta
+      sur invitation, fonctionnant entièrement sur des <strong>données fictives</strong>.
+      Avant d’accueillir de vrais clients, chacune de ses fondations de sécurité est mise à
+      l’épreuve, corrigée, puis verrouillée par des tests automatisés. Voici l’état vérifié,
+      tel quel — y compris ce qui reste volontairement éteint.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn-gold" href="./login">Entrer dans la démonstration</a>
+      <a class="btn btn-ghost" href="#portee">Voir la portée du projet</a>
+    </div>
+
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><div class="n">313</div><div class="l">vérifications automatisées, toutes vertes</div></div>
+      <div class="stat" role="listitem"><div class="n">3</div><div class="l">défauts majeurs fermés et verrouillés</div></div>
+      <div class="stat" role="listitem"><div class="n">5</div><div class="l">capacités honnêtement désactivées</div></div>
+    </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="ensum reveal">
+      <span class="tag">Summary in English</span>
+      <p>
+        Clé is an invite-only beta running entirely on <strong>fictional data</strong>. Before any
+        real client is admitted, every security foundation is adversarially tested, fixed, and
+        locked with automated checks. This page shows the verified state as it is&nbsp;—
+        including what is deliberately switched off&nbsp;: payments, document scanning, image
+        uploads, AI and licence verification all stay disabled until their real, proven
+        integrations exist. Nothing on this platform is simulated in silence.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═════════ PROMESSES ═════════ -->
+  <section aria-labelledby="promesses">
+    <div class="wrap">
+      <div class="kicker reveal">Ce que cela signifie pour vous</div>
+      <h2 class="serif reveal" id="promesses">Trois garanties de conception</h2>
+      <p class="lede reveal">
+        Ces règles ne sont pas des promesses marketing&nbsp;: chacune est appliquée par le
+        serveur et surveillée par des tests qui échouent si elle recule.
+      </p>
+
+      <div class="cards">
+        <div class="card reveal">
+          <svg class="glyph" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <path d="M13 2.5 L22 6.5 V12 C22 18 18 22 13 23.5 C8 22 4 18 4 12 V6.5 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9 12.5 L12 15.5 L17.5 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Une identité professionnelle, ça se vérifie</h3>
+          <p>
+            Personne ne devient «&nbsp;courtier&nbsp;» ou «&nbsp;agence&nbsp;» en cochant une case.
+            Les titres professionnels sont octroyés uniquement par notre équipe, après
+            vérification, par un processus nominatif&nbsp;: qui a accordé quoi, à qui, pourquoi —
+            tout est consigné au journal d’audit.
+          </p>
+        </div>
+        <div class="card reveal">
+          <svg class="glyph" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <circle cx="13" cy="13" r="10" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M8.5 13.5 L11.5 16.5 L17.5 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Rien de simulé en silence</h3>
+          <p>
+            Tout ce qui est simulé le dit clairement, et tout ce qui n’est pas prêt est
+            éteint. Le serveur <em>refuse de démarrer</em> en production si un composant
+            simulé y est configuré — l’honnêteté n’est pas une politique, c’est un
+            verrou technique.
+          </p>
+        </div>
+        <div class="card reveal">
+          <svg class="glyph" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <rect x="3.5" y="5" width="19" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M7.5 11 L10.5 14 L7.5 17 M13 17 H18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Reproduit, corrigé, verrouillé</h3>
+          <p>
+            Chaque faiblesse est d’abord <em>reproduite contre le vrai serveur</em> — jamais
+            corrigée sur parole. Le correctif s’accompagne d’un test de régression permanent&nbsp;:
+            si le défaut revenait, la suite de vérification échouerait avant toute mise en ligne.
+          </p>
+        </div>
       </div>
     </div>
-  </body>
+  </section>
+
+  <!-- ═════════ MARCHÉ ═════════ -->
+  <section aria-labelledby="marche">
+    <div class="wrap">
+      <div class="kicker reveal">Aperçu du marché</div>
+      <h2 class="serif reveal" id="marche">Des annonces conformes, dès la conception</h2>
+      <p class="lede reveal">
+        Chaque annonce publiée sur Clé porte les mentions exigées par l’encadrement du
+        courtage québécois — courtier et agence identifiés, statut de la garantie légale,
+        déclarations du vendeur — et passe une révision indépendante avant d’être visible.
+        Les exemples ci-dessous sont <strong>entièrement fictifs</strong>, comme toutes les
+        données de la démonstration.
+      </p>
+
+      <div class="prop-grid">
+        <article class="prop-card reveal">
+          <svg class="prop-art" viewBox="0 0 420 260" role="img" aria-label="Illustration fictive d’un triplex montréalais avec escalier extérieur">
+            <defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CBD9EA"/><stop offset="1" stop-color="#F2E9D6"/></linearGradient></defs>
+            <rect width="420" height="260" fill="url(#sky1)"/>
+            <circle cx="352" cy="52" r="22" fill="#E8CD96"/>
+            <rect x="0" y="228" width="420" height="32" fill="#C9BEA6"/>
+            <rect x="0" y="90" width="64" height="140" fill="#9FADC4"/>
+            <rect x="8" y="104" width="14" height="18" fill="#7C8BA6"/><rect x="34" y="104" width="14" height="18" fill="#7C8BA6"/>
+            <rect x="8" y="140" width="14" height="18" fill="#7C8BA6"/><rect x="34" y="140" width="14" height="18" fill="#7C8BA6"/>
+            <rect x="86" y="62" width="212" height="168" fill="#B4674F"/>
+            <rect x="80" y="50" width="224" height="14" fill="#7E4234"/>
+            <rect x="104" y="84" width="34" height="42" fill="#16223C" stroke="#EFE6D4" stroke-width="3"/>
+            <rect x="160" y="84" width="34" height="42" fill="#16223C" stroke="#EFE6D4" stroke-width="3"/>
+            <rect x="104" y="146" width="34" height="42" fill="#16223C" stroke="#EFE6D4" stroke-width="3"/>
+            <rect x="160" y="146" width="34" height="42" fill="#16223C" stroke="#EFE6D4" stroke-width="3"/>
+            <rect x="240" y="84" width="34" height="42" fill="#16223C" stroke="#EFE6D4" stroke-width="3"/>
+            <rect x="238" y="168" width="38" height="62" fill="#C9A45C"/>
+            <rect x="252" y="192" width="10" height="4" fill="#7E4234"/>
+            <path d="M298 130 C 330 138, 338 168, 320 230" fill="none" stroke="#31415F" stroke-width="6" stroke-linecap="round"/>
+            <path d="M298 122 C 336 132, 346 168, 328 230" fill="none" stroke="#31415F" stroke-width="3"/>
+            <rect x="96" y="132" width="110" height="4" fill="#EFE6D4"/>
+            <circle cx="382" cy="196" r="26" fill="#6F8F6A"/><rect x="378" y="214" width="8" height="22" fill="#5B4632"/>
+          </svg>
+          <div class="prop-body">
+            <div class="prop-top"><h3>Triplex lumineux à Rosemont</h3><span class="prop-price">899&nbsp;000&nbsp;$</span></div>
+            <p class="prop-meta">Plex · Montréal — Agence Démo inc. (fictive) · Avec garantie légale · Déclarations du vendeur reçues</p>
+            <div class="prop-tags"><span class="st st-off">Fictif — illustration</span><span class="st st-done">Révisée et approuvée (démo)</span></div>
+          </div>
+        </article>
+
+        <article class="prop-card reveal">
+          <svg class="prop-art" viewBox="0 0 420 260" role="img" aria-label="Illustration fictive de tours de condos au bord du canal">
+            <defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C4D4E8"/><stop offset="1" stop-color="#EFE3CE"/></linearGradient></defs>
+            <rect width="420" height="260" fill="url(#sky2)"/>
+            <circle cx="66" cy="54" r="18" fill="#E8CD96"/>
+            <rect x="96" y="40" width="92" height="176" fill="#25324E"/>
+            <rect x="206" y="76" width="78" height="140" fill="#31415F"/>
+            <rect x="304" y="102" width="58" height="114" fill="#3E5070"/>
+            <g fill="#C9A45C">
+              <rect x="106" y="54" width="12" height="16"/><rect x="130" y="86" width="12" height="16"/><rect x="154" y="54" width="12" height="16"/>
+              <rect x="106" y="118" width="12" height="16"/><rect x="154" y="150" width="12" height="16"/><rect x="130" y="182" width="12" height="16"/>
+              <rect x="216" y="92" width="10" height="14"/><rect x="240" y="124" width="10" height="14"/><rect x="262" y="92" width="10" height="14"/>
+              <rect x="216" y="156" width="10" height="14"/><rect x="314" y="118" width="9" height="12"/><rect x="336" y="150" width="9" height="12"/>
+            </g>
+            <g stroke="#DCE6F2" stroke-opacity=".25" stroke-width="2">
+              <path d="M96 84 H188 M96 128 H188 M96 172 H188"/><path d="M206 110 H284 M206 154 H284 M206 188 H284"/>
+            </g>
+            <rect x="0" y="216" width="420" height="44" fill="#7FA3B8"/>
+            <g stroke="#DCE6F2" stroke-opacity=".5" stroke-width="3" stroke-linecap="round">
+              <path d="M40 232 H96"/><path d="M150 244 H216"/><path d="M280 234 H330"/>
+            </g>
+            <rect x="0" y="212" width="420" height="6" fill="#C9BEA6"/>
+          </svg>
+          <div class="prop-body">
+            <div class="prop-top"><h3>Condo au bord du canal</h3><span class="prop-price">549&nbsp;000&nbsp;$</span></div>
+            <p class="prop-meta">Condo · Griffintown, Montréal — Agence Démo inc. (fictive) · Avec garantie légale · Certificat de localisation disponible</p>
+            <div class="prop-tags"><span class="st st-off">Fictif — illustration</span><span class="st st-done">Révisée et approuvée (démo)</span></div>
+          </div>
+        </article>
+
+        <article class="prop-card reveal">
+          <svg class="prop-art" viewBox="0 0 420 260" role="img" aria-label="Illustration fictive d’une maison familiale à pignon">
+            <defs><linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CBD9EA"/><stop offset="1" stop-color="#F4ECDA"/></linearGradient></defs>
+            <rect width="420" height="260" fill="url(#sky3)"/>
+            <circle cx="374" cy="48" r="20" fill="#E8CD96"/>
+            <rect x="0" y="226" width="420" height="34" fill="#B8C2A4"/>
+            <circle cx="58" cy="150" r="44" fill="#6F8F6A"/><circle cx="92" cy="128" r="30" fill="#7DA076"/>
+            <rect x="66" y="188" width="10" height="44" fill="#5B4632"/>
+            <rect x="140" y="130" width="200" height="98" fill="#EFE6D4"/>
+            <path d="M128 132 L240 58 L352 132 Z" fill="#1B2B4B"/>
+            <rect x="300" y="76" width="18" height="34" fill="#8A4A38"/>
+            <rect x="226" y="164" width="34" height="64" fill="#C9A45C"/>
+            <circle cx="253" cy="198" r="2.6" fill="#7E4234"/>
+            <rect x="158" y="152" width="30" height="34" fill="#16223C" stroke="#FFFFFF" stroke-width="3"/>
+            <rect x="292" y="152" width="30" height="34" fill="#16223C" stroke="#FFFFFF" stroke-width="3"/>
+            <rect x="150" y="150" width="6" height="38" fill="#31415F"/><rect x="190" y="150" width="6" height="38" fill="#31415F"/>
+            <rect x="284" y="150" width="6" height="38" fill="#31415F"/><rect x="324" y="150" width="6" height="38" fill="#31415F"/>
+            <rect x="140" y="222" width="200" height="8" fill="#C9BEA6"/>
+            <g fill="#7DA076"><rect x="352" y="206" width="52" height="22" rx="8"/><rect x="120" y="210" width="14" height="18" rx="5"/></g>
+          </svg>
+          <div class="prop-body">
+            <div class="prop-top"><h3>Maison familiale à Sainte-Foy</h3><span class="prop-price">675&nbsp;000&nbsp;$</span></div>
+            <p class="prop-meta">Maison · Québec — Agence Démo inc. (fictive) · Avec garantie légale · Inspection recommandée mentionnée</p>
+            <div class="prop-tags"><span class="st st-off">Fictif — illustration</span><span class="st st-done">Révisée et approuvée (démo)</span></div>
+          </div>
+        </article>
+
+        <article class="prop-card reveal">
+          <svg class="prop-art" viewBox="0 0 420 260" role="img" aria-label="Illustration fictive d’un local commercial avec auvent">
+            <defs><linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D7E9"/><stop offset="1" stop-color="#F2E9D6"/></linearGradient></defs>
+            <rect width="420" height="260" fill="url(#sky4)"/>
+            <rect x="0" y="232" width="420" height="28" fill="#B9AF99"/>
+            <rect x="52" y="46" width="316" height="188" fill="#D8CDB8"/>
+            <rect x="46" y="38" width="328" height="14" fill="#8A7B5E"/>
+            <rect x="76" y="70" width="268" height="26" fill="#1B2B4B"/>
+            <rect x="76" y="92" width="268" height="4" fill="#C9A45C"/>
+            <g>
+              <rect x="76" y="108" width="268" height="18" fill="#C9A45C"/>
+              <path d="M76 126 h268 l-10 14 h-248 Z" fill="#A8842F"/>
+            </g>
+            <rect x="88" y="150" width="150" height="76" fill="#A9C2D8"/>
+            <g stroke="#EFE6D4" stroke-width="4"><path d="M163 150 V226"/><path d="M88 188 H238"/></g>
+            <rect x="262" y="150" width="52" height="84" fill="#31415F"/>
+            <circle cx="306" cy="196" r="3" fill="#C9A45C"/>
+            <rect x="330" y="168" width="8" height="66" fill="#4A4438"/>
+            <circle cx="334" cy="160" r="10" fill="#E8CD96"/>
+            <g fill="#7DA076"><rect x="96" y="216" width="34" height="14" rx="6"/><rect x="196" y="216" width="34" height="14" rx="6"/></g>
+          </svg>
+          <div class="prop-body">
+            <div class="prop-top"><h3>Local commercial sur Wellington</h3><span class="prop-price">1&nbsp;250&nbsp;000&nbsp;$</span></div>
+            <p class="prop-meta">Commercial · Verdun, Montréal — Agence Démo inc. (fictive) · Sans garantie légale · Invitation à soumettre des offres</p>
+            <div class="prop-tags"><span class="st st-off">Fictif — illustration</span><span class="st st-done">Révisée et approuvée (démo)</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ PORTÉE ═════════ -->
+  <section aria-labelledby="portee">
+    <div class="wrap">
+      <div class="kicker reveal">La portée du projet</div>
+      <h2 class="serif reveal" id="portee">Tout ce que la plateforme couvre — et son état réel</h2>
+      <p class="lede reveal">
+        Chaque volet est étiqueté selon son état véritable&nbsp;: livré en démonstration,
+        en cours, planifié, ou volontairement éteint. Ajustez la présentation — ajoutez ou
+        retirez des volets — pour cadrer la conversation avec votre interlocuteur.
+      </p>
+
+      <div class="scope-toolbar reveal" role="group" aria-label="Filtrer les volets par état">
+        <button type="button" class="fbtn" data-f="all" aria-pressed="true">Tout</button>
+        <button type="button" class="fbtn" data-f="done" aria-pressed="false">Livré (démo)</button>
+        <button type="button" class="fbtn" data-f="wip" aria-pressed="false">En cours</button>
+        <button type="button" class="fbtn" data-f="plan" aria-pressed="false">Planifié</button>
+        <button type="button" class="fbtn" data-f="off" aria-pressed="false">Éteint volontairement</button>
+      </div>
+
+      <div class="scope-grid reveal" id="scopeGrid" aria-live="polite"><noscript><p style="color:var(--ink-2)">La liste interactive des volets requiert JavaScript.</p></noscript></div>
+
+      <form class="scope-add reveal" id="scopeForm" aria-label="Ajouter un volet à la présentation">
+        <div class="row2">
+          <div class="f-name">
+            <label for="sfName">Volet</label>
+            <input id="sfName" name="name" type="text" required maxlength="60" placeholder="Ex.&nbsp;: Visites virtuelles" style="width:100%">
+          </div>
+          <div class="f-note">
+            <label for="sfNote">Description (facultatif)</label>
+            <input id="sfNote" name="note" type="text" maxlength="120" placeholder="Une phrase, honnête" style="width:100%">
+          </div>
+          <div class="f-st">
+            <label for="sfSt">État</label>
+            <select id="sfSt" name="status" style="width:100%">
+              <option value="plan">Planifié</option>
+              <option value="wip">En cours</option>
+              <option value="done">Livré (démo)</option>
+              <option value="off">Éteint volontairement</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2" style="margin-top:14px; align-items:center;">
+          <button type="submit" class="btn">Ajouter le volet</button>
+          <button type="button" class="btn btn-quiet" id="scopeReset">Rétablir la portée d’origine</button>
+        </div>
+        <p class="scope-note">
+          Vos ajouts et retraits ne modifient que cette présentation, sur cet appareil —
+          jamais la plateforme elle-même.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═════════ CORRECTIFS ═════════ -->
+  <section aria-labelledby="correctifs">
+    <div class="wrap">
+      <div class="kicker reveal">La méthode, appliquée</div>
+      <h2 class="serif reveal" id="correctifs">Deux exemples récents, en toute transparence</h2>
+      <p class="lede reveal">
+        Extraits du dernier cycle de durcissement (référence interne B27, août 2026). Nous
+        publions nos correctifs parce qu’une plateforme de confiance n’a rien à cacher sur
+        la façon dont elle se renforce.
+      </p>
+
+      <article class="fix reveal">
+        <span class="ref">Correctif 1 · Identités et fichiers</span>
+        <h3>Un visiteur ne peut plus se déclarer courtier — ni écrire de fichiers chez nous</h3>
+        <p>
+          Notre banc d’essai a démontré qu’un compte anonyme pouvait s’auto-déclarer
+          «&nbsp;courtier&nbsp;» à l’inscription et, de là, téléverser des fichiers vers un
+          emplacement de son choix. Les deux portes sont fermées&nbsp;:
+        </p>
+        <div class="ba">
+          <div class="before">
+            <span class="tag">Avant — reproduit</span>
+            L’inscription acceptait le rôle «&nbsp;courtier&nbsp;»&nbsp;; le stockage acceptait des
+            fichiers vers une clé arbitraire, sans lien avec un compte ni une annonce.
+          </div>
+          <div class="after">
+            <span class="tag">Après — vérifié</span>
+            L’inscription n’accorde que les types de compte publics. Les titres professionnels
+            passent par une vérification nominative. Le téléversement d’images est éteint
+            partout tant que ses garde-fous n’existent pas.
+          </div>
+        </div>
+        <div class="evidence" aria-label="Preuve technique">
+<pre><span class="dim">POST /auth/signup  roles: ["broker"]</span>   <span class="bad">avant : rôle accordé</span> → <span class="ok">après : filtré (liste blanche)</span>
+<span class="dim">PUT  /storage/local/clé-arbitraire.jpg</span> <span class="bad">avant : 200, octets écrits</span> → <span class="ok">après : 404, route absente</span></pre>
+        </div>
+      </article>
+
+      <article class="fix reveal">
+        <span class="ref">Correctif 2 · Frontière de simulation</span>
+        <h3>La production refuse tout composant simulé — et le dit</h3>
+        <p>
+          Chaque capacité optionnelle (paiements, analyse de documents, IA…) est désormais
+          déclarée explicitement&nbsp;: <strong>désactivée par défaut</strong>, activable
+          uniquement avec un fournisseur réel. Un composant simulé configuré en production
+          empêche le démarrage du serveur&nbsp;; une capacité éteinte répond clairement
+          «&nbsp;non disponible&nbsp;» au lieu de faire semblant.
+        </p>
+        <div class="evidence" aria-label="Preuve technique">
+<pre><span class="dim">$ NODE_ENV=production … démarrage, noyau sûr seulement</span>
+<span class="ok">✓ serveur démarré — paiements : éteints · documents : éteints · images : éteintes</span>
+<span class="dim">$ NODE_ENV=production … avec un pilote de paiement simulé</span>
+<span class="bad">✗ refus de démarrer : composant simulé interdit en production</span></pre>
+        </div>
+      </article>
+
+      <div class="band reveal">
+        <h3 class="serif">313 vérifications automatisées, toutes vertes</h3>
+        <p class="sub">
+          Exécutées avant chaque mise en ligne, contre le vrai serveur et la vraie base de
+          données. Une seule qui échoue, et rien ne part.
+        </p>
+        <div class="row">
+          <div class="g"><div class="n">126</div><div class="l">tests du serveur (sécurité, rôles, conformité OACIQ)</div></div>
+          <div class="g"><div class="n">145</div><div class="l">tests de l’application (dont le contrat client-serveur)</div></div>
+          <div class="g"><div class="n">42</div><div class="l">parcours complets, y compris l’accessibilité</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ HONNÊTETÉ ═════════ -->
+  <section aria-labelledby="honnetete">
+    <div class="wrap">
+      <div class="kicker reveal">Notre engagement d’honnêteté</div>
+      <h2 class="serif reveal" id="honnetete">Ce qui reste volontairement éteint</h2>
+      <p class="lede reveal">
+        Aucun fournisseur n’a été branché «&nbsp;pour faire vrai&nbsp;». Chaque capacité
+        ci-dessous demeure éteinte jusqu’à ce que son intégration réelle existe et soit
+        éprouvée — et cette page le dira le jour où ce sera le cas.
+      </p>
+
+      <div class="tablewrap reveal">
+        <table>
+          <thead>
+            <tr><th scope="col">Capacité</th><th scope="col">État actuel</th><th scope="col">Condition de mise en service</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Paiements</td>
+              <td><span class="chip off">Éteint</span></td>
+              <td>Fournisseur de paiement réel intégré et éprouvé. Aucun argent réel ne circule aujourd’hui.</td>
+            </tr>
+            <tr>
+              <td>Analyse antivirus</td>
+              <td><span class="chip off">Éteint</span></td>
+              <td>Moteur d’analyse réel. En attendant, un document déposé est marqué «&nbsp;analyse indisponible&nbsp;» — jamais «&nbsp;sain&nbsp;» par défaut.</td>
+            </tr>
+            <tr>
+              <td>Téléversement d’images</td>
+              <td><span class="chip off">Éteint partout</span></td>
+              <td>Billets à usage unique, rattachement au propriétaire, quotas et retrait des métadonnées (EXIF/GPS).</td>
+            </tr>
+            <tr>
+              <td>Assistance IA</td>
+              <td><span class="chip off">Simulée, étiquetée</span></td>
+              <td>Décision explicite du propriétaire avant tout fournisseur réel — l’IA ne modifie jamais vos données en silence.</td>
+            </tr>
+            <tr>
+              <td>Vérification de permis</td>
+              <td><span class="chip ok">Manuelle, active</span></td>
+              <td>Processus nominatif par notre équipe (voir Correctif 1)&nbsp;; interconnexion aux registres à l’étude.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ VOIR ═════════ -->
+  <section aria-labelledby="voir">
+    <div class="wrap">
+      <div class="kicker reveal">Voir par vous-même</div>
+      <h2 class="serif reveal" id="voir">La démonstration est ouverte</h2>
+      <div class="see">
+        <div class="card reveal">
+          <h3>Essayer la démonstration</h3>
+          <p>
+            L’interface complète, en mode démonstration clairement étiqueté —
+            <a href="./login">entrez avec un compte de démonstration</a>.
+            Toutes les personnes, propriétés et transactions y sont fictives.
+          </p>
+        </div>
+        <div class="card reveal">
+          <h3>Examiner le code</h3>
+          <p>
+            Le code source est privé mais ouvert aux réviseurs sur demande auprès du
+            propriétaire — chaque correctif de cette page y est traçable, commit par commit,
+            avec sa reproduction documentée.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brandline">
+      <svg class="keymark" viewBox="0 0 74 74" fill="none" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+          <path d="M 42.4 13.6 A 19 19 0 1 0 42.4 42.4"/>
+          <path d="M 44 42 L 63 61"/>
+          <path d="M 51 49 L 44.5 55.5"/>
+          <path d="M 60 58 L 52 66"/>
+        </g>
+      </svg>
+      <span class="serif">Clé</span>
+    </div>
+    <p>
+      Clé — plateforme immobilière de confiance, Québec. Version de démonstration&nbsp;:
+      toutes les personnes, propriétés et transactions sont fictives&nbsp;; aucune donnée
+      personnelle réelle n’est acceptée&nbsp;; aucune transaction financière n’est exécutée&nbsp;;
+      rien sur cette page ne constitue une offre ou un conseil en investissement.
+      Dossier établi le 17 août 2026 à partir de l’état vérifié du dépôt de code
+      (référence interne&nbsp;: B27, lots 1 et 2).
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.add("js");
+  (function () {
+    var LABELS = { done: "Livré (démo)", wip: "En cours", plan: "Planifié", off: "Éteint volontairement" };
+    var DEFAULT_SCOPE = [
+      { name: "Authentification et sécurité", note: "Comptes, double authentification, sessions, journal d’audit complet.", status: "done" },
+      { name: "Profils, réseau et annuaire", note: "Profils professionnels, connexions, abonnements, recherche globale.", status: "done" },
+      { name: "Fil social", note: "Publications, commentaires, règle stricte d’étiquetage du contenu commandité.", status: "done" },
+      { name: "Marché immobilier", note: "Annonces conformes OACIQ, révision indépendante obligatoire, filtres.", status: "done" },
+      { name: "Entreprises confidentielles", note: "Dossiers verrouillés par entente de confidentialité, historique d’accès.", status: "done" },
+      { name: "Projets et équipes", note: "Assistant de création, candidatures, intérêt non contraignant.", status: "done" },
+      { name: "Carrefour investisseurs", note: "Simulation clairement étiquetée — aucune transaction réelle.", status: "done" },
+      { name: "Salles de transaction", note: "Listes de contrôle, messagerie, statuts de documents.", status: "done" },
+      { name: "Documents privés", note: "Dépôt typé, analyse étiquetée, suppression.", status: "done" },
+      { name: "Soumissions et consultations", note: "Demandes de soumission et prises de rendez-vous.", status: "done" },
+      { name: "Assistance IA (simulée)", note: "Étiquetée, revue humaine — jamais de modification silencieuse.", status: "done" },
+      { name: "Confidentialité (Loi 25)", note: "Consentements versionnés, export des données, demandes d’effacement.", status: "wip" },
+      { name: "Durcissement adversarial", note: "Cycle B27 — reproduction, correctif, verrou (lots 1 et 2 livrés).", status: "wip" },
+      { name: "Vérification automatisée des permis", note: "Manuelle aujourd’hui ; interconnexion aux registres à l’étude.", status: "plan" },
+      { name: "Paiements réels", note: "Éteints jusqu’à l’intégration d’un fournisseur éprouvé.", status: "off" },
+      { name: "Téléversement d’images", note: "Éteint partout — garde-fous requis d’abord (billets, quotas, EXIF).", status: "off" }
+    ];
+    var KEY = "cle-scope-v1";
+    var scope, filter = "all";
+    try { scope = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { scope = null; }
+    if (!Array.isArray(scope) || !scope.length) scope = DEFAULT_SCOPE.slice();
+
+    var grid = document.getElementById("scopeGrid");
+    var form = document.getElementById("scopeForm");
+    var resetBtn = document.getElementById("scopeReset");
+    var fbtns = Array.prototype.slice.call(document.querySelectorAll(".fbtn"));
+
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify(scope)); } catch (e) { /* présentation seulement */ }
+    }
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+      });
+    }
+    function render() {
+      var shown = scope.filter(function (it) { return filter === "all" || it.status === filter; });
+      grid.innerHTML = shown.map(function (it) {
+        var i = scope.indexOf(it);
+        return '<div class="scope-card">' +
+          '<button type="button" class="x" data-i="' + i + '" aria-label="Retirer le volet ' + esc(it.name) + ' de la présentation">×</button>' +
+          '<span class="st st-' + esc(it.status) + '">' + LABELS[it.status] + "</span>" +
+          "<h4>" + esc(it.name) + "</h4>" +
+          (it.note ? '<p class="note">' + esc(it.note) + "</p>" : "") +
+          "</div>";
+      }).join("");
+      if (!shown.length) {
+        grid.innerHTML = '<p style="color:var(--ink-2); font-size:14px;">Aucun volet dans cette catégorie pour le moment.</p>';
+      }
+      fbtns.forEach(function (b) {
+        var f = b.getAttribute("data-f");
+        var n = f === "all" ? scope.length : scope.filter(function (it) { return it.status === f; }).length;
+        b.textContent = (f === "all" ? "Tout" : LABELS[f]) + " · " + n;
+        b.setAttribute("aria-pressed", String(f === filter));
+      });
+    }
+    grid.addEventListener("click", function (ev) {
+      var btn = ev.target.closest(".x");
+      if (!btn) return;
+      scope.splice(Number(btn.getAttribute("data-i")), 1);
+      save(); render();
+    });
+    fbtns.forEach(function (b) {
+      b.addEventListener("click", function () { filter = b.getAttribute("data-f"); render(); });
+    });
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = form.name.value.trim();
+      if (!name) return;
+      scope.push({ name: name, note: form.note.value.trim(), status: form.status.value });
+      save(); form.reset(); filter = "all"; render();
+    });
+    resetBtn.addEventListener("click", function () {
+      scope = DEFAULT_SCOPE.slice();
+      try { localStorage.removeItem(KEY); } catch (e) { /* rien */ }
+      filter = "all"; render();
+    });
+    render();
+  })();
+
+  (function () {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var els = document.querySelectorAll(".reveal");
+    if (reduced || !("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
 </html>
